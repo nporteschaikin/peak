@@ -11,8 +11,8 @@ To quote [@jenius](https://github.com/carrot/carrot-the-company/blob/master/idea
 My answer is **peak**, a development framework for Tumblr themes.  
 
 - natively supports [sneak](http://www.github.com/nporteschaikin/sneak), my [jade](http://www.github.com/visionmedia/jade)-inspired template language which includes support for tumblr blocks and tags.
-- watches and compiles themes in sneak or vanilla HTML -- seamlessly!
-- server outputs your theme, compiled with your tumblr -- or any tumblr, for that matter.
+- watches and compiles themes in sneak or vanilla HTML seamlessly!
+- server outputs your theme, compiled with your tumblr (or any tumblr, for that matter).
 
 ### Installation
 
