@@ -1,16 +1,25 @@
+peek
+===============
+
+Finally!  A framework for efficiently developing Tumblr themes.
+
+### Why should you care?
+To quote [@jenius](https://github.com/carrot/carrot-the-company/blob/master/ideas/tumblr-parser.md):
+
+> Tumblr development at the moment is severely painful - you have to write the code without the tumblr tags, then paste it into tumblr to test. Their online text editor is slower, more awkward, and doesn't have the version control and text editing shortcuts we know, love, and rely on.
+
+My answer is **peek**, a development framework for Tumblr themes.
+
+
+### Installation
+
 ```
-usage: peek [-h] [-v] [-p PORT] [-t TUMBLR] [-d DIR] path
+$ npm install peek -g
+```
 
-Tumblr theme compiler
+### Usage
 
-Positional arguments:
-  path                  source of .tumblr files (path or file)
-
-Optional arguments:
-  -h, --help            Show this help message and exit.
-  -v, --version         Show program's version number and exit.
-  -p PORT, --port PORT  server port
-  -t TUMBLR, --tumblr TUMBLR
-                        input tumblr <handle>
-  -d DIR, --dir DIR     output directory <dir>
+```
+touch my-tumblr-theme.sneak
+peek my-tumblr-theme.sneak -t carrotcreative
 ```
