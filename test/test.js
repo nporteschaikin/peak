@@ -1,14 +1,22 @@
 var chai = require('chai')
   , cli = require('../lib/cli')
+  , peak = require('..')
   , fs = require('fs')
   , path = require('path')
 
   , join = path.join
   , exists = fs.existsSync
+  , unlink = fs.unlinkSync
+  , read = fs.readFileSync
 
   , fixtures = join(__dirname, "fixtures");
 
 chai.should();
+
+function rm (dir) {
+  if (exists(dir)) unlink(dir);
+  return dir;
+}
 
 describe('cli', function () {
 
@@ -33,10 +41,81 @@ describe('cli', function () {
   describe('exec', function () {
 
     it('should compile to public folder', function (done) {
-      var c = new cli({path: join(fixtures, 'cli', 'exec')});
+      var pub = rm(join(fixtures, 'cli', 'exec', 'public', 'index.html'))
+        , c = new cli({path: join(fixtures, 'cli', 'exec')});
       c.exec(function () {
         done();
-        exists(join(fixtures, 'cli', 'exec', 'public')).should.be.true;
+        exists(pub).should.be.true;
+        c.exit();
+      })
+    })
+
+  })
+
+  describe('events', function() {
+
+    it('should return an object with a _maxListeners property', function () {
+      var c = new cli({path: join(fixtures, 'cli', 'exec')});
+      c.events().should.have.ownProperty('_maxListeners');
+    })
+
+  })
+
+})
+
+describe('api', function () {
+
+  describe('start', function () {
+
+    var p = new peak(join(fixtures, 'api', 'base'))
+      , pub = rm(join(fixtures, 'api', 'base', 'public', 'index.html'));
+
+    before(function (done) {
+      p.start(function(){done();p.stop();});
+    })
+
+    it('should compile to public folder', function () {
+      exists(pub).should.be.true;
+    })
+
+    it('should compile correctly', function () {
+      read(pub, 'utf8').should
+        .eq('<!DOCTYPE html><html><head><title>Fixture</title></head></html>');
+    })
+
+    it('peak.options.index == "index.html"', function (done) {
+      var p2 = new peak(join(fixtures, 'api', 'base', 'index.sneak'));
+      p2.start(function () {
+        done();
+        this.stop();
+        this.options.index.should.eq('index.html');
+      })
+    })
+
+    it('should get tumblr', function (done) {
+      var p3 = new peak(join(fixtures, 'api', 'base', 'index.sneak'), { tumblr: "carrotcreative", port: "1234" });
+      p3.start(function () {
+        done();
+        this.stop();
+        this.context.should.include('block:Posts');
+      })
+    })
+
+    it('should parse tumblr blocks', function (done) {
+      var p4 = new peak(join(fixtures, 'api', 'base', 'blocks.sneak'), { tumblr: "carrotcreative", port: "4321" });
+      p4.start(function () {
+        done();
+        this.stop();
+        read(join(fixtures, 'api', 'base', 'public', 'blocks.html'), 'utf8').should.include('<p>1</p><p>1</p><p>1</p>');
+      })
+    })
+
+    it('should parse tumblr variables', function (done) {
+      var p4 = new peak(join(fixtures, 'api', 'base', 'variables.sneak'), { tumblr: "carrotcreative", port: "4321" });
+      p4.start(function () {
+        done();
+        this.stop();
+        read(join(fixtures, 'api', 'base', 'public', 'variables.html'), 'utf8').should.include('<p>carrotcreative</p>');
       })
     })
 

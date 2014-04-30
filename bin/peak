@@ -16,5 +16,5 @@ parser.addArgument( ["-p", "--port"],    { help: "server port" } );
 parser.addArgument( ["-t", "--tumblr"],  { help: "input tumblr <handle>" } );
 parser.addArgument( ["-d", "--dir"],     { help: "output directory <dir>" } );
 
-new CLI(parser.parseArgs(), process)
-  .exec();
+var c = new CLI(parser.parseArgs(), process)
+c.exec();
