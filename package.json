@@ -37,7 +37,6 @@
     "node": ">=0.10.0"
   },
   "devDependencies": {
-    "coffee-script": "*",
     "chai": "*",
     "mocha": "*"
   }
