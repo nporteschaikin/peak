@@ -20,6 +20,6 @@ $ npm install peek -g
 ### Usage
 
 ```
-touch my-tumblr-theme.sneak
-peek my-tumblr-theme.sneak -t carrotcreative
+$ touch my-tumblr-theme.sneak
+$ peek my-tumblr-theme.sneak -t carrotcreative
 ```
