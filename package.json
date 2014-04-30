@@ -1,5 +1,5 @@
 {
-  "name": "peek",
+  "name": "peak",
   "version": "0.0.1",
   "author": "Noah Portes Chaikin <noah.porteschaikin@carrotcreative.com>",
   "description": "Tumblr theme compiler",
@@ -12,7 +12,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/nporteschaikin/peek.git"
+    "url": "https://github.com/nporteschaikin/peak.git"
   },
   "main": "lib",
   "directories": {
