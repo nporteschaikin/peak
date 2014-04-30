@@ -1,0 +1,44 @@
+{
+  "name": "peek",
+  "version": "0.0.1",
+  "author": "Carrot Creative <dev@carrotcreative.com>",
+  "description": "Tumblr theme compiler",
+  "license": "MIT",
+  "keywords": [
+    "tumblr",
+    "theme",
+    "compiler",
+    "parser"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carrot/peek.git"
+  },
+  "main": "lib",
+  "directories": {
+    "lib": "lib",
+    "bin": "bin"
+  },
+  "dependencies": {
+    "colors": "0.6.x",
+    "argparse": "*",
+    "request": "*",
+    "sneak": "*",
+    "connect": "*",
+    "socket.io": "*",
+    "connect-inject": "*",
+    "when": "*",
+    "colors": "*"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "devDependencies": {
+    "coffee-script": "*",
+    "chai": "*",
+    "mocha": "*"
+  }
+}
