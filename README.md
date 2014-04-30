@@ -1,6 +1,8 @@
 peak
 ===============
 
+[![NPM version](https://badge.fury.io/js/peak.svg)](http://badge.fury.io/js/peak) [![tests](https://travis-ci.org/nporteschaikin/peak.png?branch=master)](https://travis-ci.org/nporteschaikin/peak)
+
 Finally!  A framework for efficiently developing Tumblr themes.
 
 ### Why should you care?
