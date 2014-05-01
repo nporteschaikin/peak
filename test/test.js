@@ -50,6 +50,16 @@ describe('cli', function () {
       })
     })
 
+    it('should compile a theme file', function (done) {
+      var theme = rm(join(fixtures, 'cli', 'exec', '.peak', 'public', 'theme', 'index.html'))
+        , c = new cli({theme: true, path: join(fixtures, 'cli', 'exec')});
+      c.exec(function () {
+        done();
+        exists(theme).should.be.true;
+        c.exit();
+      })
+    })
+
   })
 
   describe('events', function() {

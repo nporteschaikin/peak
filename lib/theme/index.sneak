@@ -1,0 +1,7 @@
+! 5
+html
+  head
+    title peak theme!
+    link(rel: "stylesheet", href: "style.css", type: "text/css")/
+  body
+    textarea= theme!
