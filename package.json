@@ -24,7 +24,7 @@
     "argparse": "*",
     "request": "*",
     "sneak": "*",
-    "connect": "*",
+    "connect": "2.x",
     "socket.io": "*",
     "connect-inject": "*",
     "when": "*",
