@@ -1,6 +1,6 @@
 {
   "name": "peak",
-  "version": "0.0.2",
+  "version": "0.2",
   "author": "Noah Portes Chaikin <noah.porteschaikin@carrotcreative.com>",
   "description": "Tumblr development framework.",
   "license": "MIT",
@@ -28,7 +28,9 @@
     "socket.io": "*",
     "connect-inject": "*",
     "when": "*",
-    "colors": "*"
+    "colors": "*",
+    "highlight.js": "*",
+    "js-beautify": "*"
   },
   "scripts": {
     "test": "mocha"

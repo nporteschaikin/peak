@@ -1,7 +1,13 @@
 ! 5
 html
   head
-    title peak theme!
-    link(rel: "stylesheet", href: "style.css", type: "text/css")/
+    title peak: #{basename!}
+    link(rel: "stylesheet", type: "text/css", href: "style.css")/
+    link(rel: "stylesheet", type: "text/css", href: "highlight.css")/
+    script(type: "text/javascript", src: "theme.js")
   body
-    textarea= theme!
+    header#header
+      div
+        h1= basename!
+        button Select All
+    main= theme!
