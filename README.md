@@ -37,17 +37,19 @@ $ npm install peak -g
   - [sneak's readme](http://www.github.com/nporteschaikin/sneak/tree/master/README.md)
   - [tumblr's theme documentation](http://www.tumblr.com/docs/en/custom_themes).
 
-3. Run peek; include your tumblr with the `-t` option:
+3. Run peak; include your tumblr with the `--tumblr` argument (optional):
 
   ```
-  $ peak my-tumblr-theme.sneak -t a-tumblr-handle
+  $ peak my-tumblr-theme.sneak --tumblr a-tumblr-handle
   ```
 
   Run with `--help` or `-h` for all options.
 
-4. Using a browser, navigate to `http://localhost:1111`.
+5. Go!
 
-5. Edit your theme; peak watches all pertinent files, recompiles, and serves them instantly.
+  - Using a browser, navigate to localhost:1111 (to specify a different port, use the `--port` argument).
+  - peak watches for changes to all theme files and instantly recompiles them.
+  - To output your pre-compiled theme, use the `--theme` option and navigate to `localhost:1111/theme`; this is also output instantly when changes are made to your theme.
 
 ## License & Contributing
 
