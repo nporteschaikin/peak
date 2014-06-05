@@ -3,20 +3,15 @@ peak
 
 [![NPM version](https://badge.fury.io/js/peak.svg)](http://badge.fury.io/js/peak) [![tests](https://travis-ci.org/nporteschaikin/peak.png?branch=master)](https://travis-ci.org/nporteschaikin/peak)
 
-Finally!  A framework for efficiently developing Tumblr themes.
+Peak is a node toolkit for developing and deploying Tumblr themes.
 
-### Why should you care?
-To quote [@jenius](https://github.com/carrot/carrot-the-company/blob/master/ideas/tumblr-parser.md):
-
-> Tumblr development at the moment is severely painful - you have to write the code without the tumblr tags, then paste it into tumblr to test. Their online text editor is slower, more awkward, and doesn't have the version control and text editing shortcuts we know, love, and rely on.
-
-My answer is **peak**, a development framework for Tumblr themes.  
-
-- natively supports [sneak](http://www.github.com/nporteschaikin/sneak), my [jade](http://www.github.com/visionmedia/jade)-inspired template language which includes support for tumblr blocks and tags.
-- watches and compiles themes in sneak or vanilla HTML seamlessly!
-- server outputs your theme, compiled with your tumblr (or any tumblr, for that matter).
+- **Write** Tumblr themes with your favorite HTML, CSS, and JavaScript preprocessors; include Tumblr tags natively with language-friendly syntax.
+- **Preview** Tumblr themes in real-time with actual Tumblr content.
+- **Deploy** to Tumblr with one prompt in your command line.
 
 ### Installation
+
+via npm:
 
 ```
 $ npm install peak -g
@@ -24,32 +19,33 @@ $ npm install peak -g
 
 ### Usage
 
-1. Create a sneak or html file to serve:
+1. Create a new peak project:
 
   ```
-  $ touch my-tumblr-theme.sneak
+  $ peak new mytheme
   ```
 
-  peak can also compile and serve a folder.  
-
-
-2. Write your tumblr theme.  
-  - [sneak's readme](http://www.github.com/nporteschaikin/sneak/tree/master/README.md)
-  - [tumblr's theme documentation](http://www.tumblr.com/docs/en/custom_themes).
-
-3. Run peak; include your tumblr with the `--tumblr` argument (optional):
+  where `mytheme` is the path of the folder you'd like to create.  Optionally, run `peak new` with flags to configure your project (see [configuration options](#configuration)).
+2. Change directory to `mytheme` and start the watcher:
 
   ```
-  $ peak my-tumblr-theme.sneak --tumblr a-tumblr-handle
+  $ cd mytheme
+  $ peak watch
   ```
 
-  Run with `--help` or `-h` for all options.
+  Run with `--help` or `-h` for options.
+3. Write your Tumblr theme in your project root.
+  - See the [syntax](#syntax) section for Peak's language-friendly syntax for Tumblr tags, including external files, and more (soon).
+  - See the [languages](#supported-languages) section for supported template languages.
+4. Using a browser, navigate to localhost:1111.
+5. To deploy your theme to Tumblr, run `peak deploy` from your project root.
 
-5. Go!
+#### Getting Started
 
-  - Using a browser, navigate to localhost:1111 (to specify a different port, use the `--port` argument).
-  - peak watches for changes to all theme files and instantly recompiles them.
-  - To output your pre-compiled theme, use the `--theme` option and navigate to `localhost:1111/theme`; this is also output instantly when changes are made to your theme.
+- [Configuration](docs/Configuration.md)
+- [Syntax](docs/Syntax.md)
+- [Languages](docs/Languages.md)
+
 
 ## License & Contributing
 

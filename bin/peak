@@ -1,21 +1,52 @@
 #!/usr/bin/env node
 
-var CLI = require('../lib/cli')
-  , pkg = require('../package.json')
+var Commands = require('../lib/commands')
   , ArgParse = require('argparse').ArgumentParser
-  , parser = new ArgParse (
-    {
-      version:     pkg.version,
-      description: pkg.description,
-      addHelp:     true
-    }
-  )
+  , pkg = require('../package.json');
 
-parser.addArgument( ["path"],            { help: "source of .tumblr files (path or file)" } )
-parser.addArgument( ["-p", "--port"],    { help: "server port" } );
-parser.addArgument( ["-t", "--tumblr"],  { help: "input tumblr <handle>" } );
-parser.addArgument( ["-d", "--dir"],     { help: "output directory <dir>" } );
-parser.addArgument( ["-T", "--theme"],   { help: "show theme HTML", action: "storeTrue" } );
+var Parse = function Parse () {
+  var parser = new ArgParse(this.details)
+    , subParser = parser.addSubparsers(this.child_details)
 
-var c = new CLI(parser.parseArgs(), process)
-c.exec();
+    , generate = subParser.addParser('new', { addHelp: true })
+    , watch = subParser.addParser('watch', { addHelp: true })
+    , deploy = subParser.addParser('deploy', { addHelp: true });
+
+  generate.addArgument(['path'], { help: 'path to new project' });
+  generate.addArgument(['-i', '--index'],  { help: 'path to index file' });
+  generate.addArgument(['-e', '--email'], { help: 'tumblr e-mail address' });
+  generate.addArgument(['-p', '--password'], { help: 'tumblr password' });
+  generate.addArgument(['-b', '--blog'],  { help: 'tumblr blog name' });
+
+  watch.addArgument(['-p', '--path'], { help: 'source path' });
+  watch.addArgument(['-b', '--blog'],  { help: 'blog to use as context' });
+
+  deploy.addArgument(['-i', '--index'], { help: 'theme to deploy' });
+  deploy.addArgument(['-e', '--email'], { help: 'tumblr e-mail address' });
+  deploy.addArgument(['-p', '--password'], { help: 'tumblr password' });
+  deploy.addArgument(['-b', '--blog'],  { help: 'blog to deploy' });
+
+  this.args = parser.parseArgs();
+}
+
+Parse.prototype = {
+
+  details: {
+    version: pkg.version,
+    description: pkg.description,
+    addHelp: true
+  },
+
+  child_details: {
+    title: 'children',
+    dest: 'action'
+  },
+
+  exec: function () {
+    (new Commands(process, this.args)).exec();
+  }
+
+}
+
+new Parse()
+  .exec();

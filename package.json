@@ -1,6 +1,6 @@
 {
   "name": "peak",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "author": "Noah Portes Chaikin <noah.porteschaikin@carrotcreative.com>",
   "description": "Tumblr development framework.",
   "license": "MIT",
@@ -20,17 +20,16 @@
     "bin": "bin"
   },
   "dependencies": {
-    "colors": "0.6.x",
     "argparse": "*",
-    "request": "*",
-    "sneak": "*",
+    "cheerio": "0.12.0",
+    "chokidar": "*",
+    "colors": "0.6.x",
     "connect": "2.x",
-    "socket.io": "*",
     "connect-inject": "*",
-    "when": "*",
-    "colors": "*",
-    "highlight.js": "*",
-    "js-beautify": "*"
+    "js-yaml": "*",
+    "request": "*",
+    "socket.io": "*",
+    "when": "*"
   },
   "scripts": {
     "test": "mocha"
@@ -39,7 +38,11 @@
     "node": ">=0.10.0"
   },
   "devDependencies": {
+    "coffee-script": "*",
+    "jade": "*",
+    "stylus": "*",
     "chai": "*",
-    "mocha": "*"
+    "mocha": "*",
+    "rimraf": "*"
   }
 }
