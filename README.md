@@ -34,13 +34,13 @@ $ npm install peak -g
   ```
 
   Run with `--help` or `-h` for options.
-3. Write your Tumblr theme in your project root.
-  - See the [syntax](#syntax) section for Peak's language-friendly syntax for Tumblr tags, including external files, and more (soon).
-  - See the [languages](#supported-languages) section for supported template languages.
+3. Write your Tumblr theme!
+  - See the [syntax](docs/Syntax.md) section for Peak's language-friendly syntax for Tumblr tags, including external files, and more (soon).
+  - See the [languages](docs/Languages.md) section for supported template languages.
 4. Using a browser, navigate to localhost:1111.
-5. To deploy your theme to Tumblr, run `peak deploy` from your project root.
+5. To deploy your theme to Tumblr, run `peak deploy` from your project's root folder.
 
-#### Getting Started
+## Getting Started
 
 - [Configuration](docs/Configuration.md)
 - [Syntax](docs/Syntax.md)
