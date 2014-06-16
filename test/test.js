@@ -338,6 +338,11 @@ describe('adapter', function () {
     adapter.kind.name.should.eq('css');
   })
 
+  it('should return css kind if ext is .less', function () {
+    var adapter = Adapter('body { &.index { background: blue; } }', { path: 'test.less' });
+    adapter.kind.name.should.eq('css');
+  })
+
 })
 
 describe('compiler', function () {
