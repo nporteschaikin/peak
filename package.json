@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "coffee-script": "1.7.x",
+    "hamljs": "0.x",
     "jade": "1.3.x",
     "sneak": "0.0.x",
     "stylus": "0.x",

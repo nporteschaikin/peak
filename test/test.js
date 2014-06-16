@@ -328,6 +328,11 @@ describe('adapter', function () {
     adapter.kind.name.should.eq('html');
   })
 
+  it('should return html kind if ext is .haml', function () {
+    var adapter = Adapter('%html', { path: 'test.haml' });
+    adapter.kind.name.should.eq('html');
+  })
+
   it('should return css kind if ext is .styl', function () {
     var adapter = Adapter('body\n  background: black', { path: 'test.styl' });
     adapter.kind.name.should.eq('css');
