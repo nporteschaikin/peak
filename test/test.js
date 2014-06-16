@@ -68,21 +68,21 @@ describe('cli', function () {
 
   describe('deploy', function () {
 
-    // this.timeout(10000);
-    //
-    // it('should deploy project', function (done) {
-    //   var path = join(fixtures, 'cli', 'deploy')
-    //     , cli = new Commands(null, {
-    //       action: 'deploy',
-    //       path: path,
-    //       mute: true,
-    //       email: 'ship@carrotcreative.com',
-    //       password: 'carrotcreative',
-    //       blog: 'shipdeploy'
-    //     });
-    //
-    //   cli.exec().done(done);
-    // })
+    this.timeout(10000);
+
+    it('should deploy project', function (done) {
+      var path = join(fixtures, 'cli', 'deploy')
+        , cli = new Commands(null, {
+          action: 'deploy',
+          path: path,
+          mute: true,
+          email: 'ship@carrotcreative.com',
+          password: 'carrotcreative',
+          blog: 'shipdeploy'
+        });
+
+      cli.exec().done(done);
+    })
 
   })
 
