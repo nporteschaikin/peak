@@ -26,7 +26,7 @@ describe('cli', function () {
       , cli = new Commands(null, {path: path, mute: true});
 
     helpers.rmdir(join(path, '.peak'), function () {
-      cli.exec().done(function () {
+      cli.init().done(function () {
         exists(path).should.be.true;
         cli.emitter.emit('exit');
         done();
@@ -40,7 +40,7 @@ describe('cli', function () {
       var path = join(fixtures, 'cli', 'new', 'create')
         , cli = new Commands(null, {action: 'new', path: path, mute: true});
       helpers.rmdir(path, function () {
-        cli.exec().done(function () {
+        cli.init().done(function () {
           exists(path).should.be.true;
           done();
         });
@@ -56,7 +56,7 @@ describe('cli', function () {
         , cli = new Commands(null, {action: 'watch', path: path, mute: true});
 
       helpers.rmdir(join(path, '.peak'), function () {
-        cli.exec().done(function () {
+        cli.init().done(function () {
           exists(path).should.be.true;
           cli.emitter.emit('exit');
           done();
@@ -81,7 +81,7 @@ describe('cli', function () {
           blog: 'shipdeploy'
         });
 
-      cli.exec().done(done);
+      cli.init().done(done);
     })
 
   })
@@ -386,7 +386,7 @@ describe('generator', function () {
 
   it('should fail if existing directory is specified', function (done) {
     var peak = new Peak(join(fixtures, 'generator'));
-    peak.generate().catch(function(){done()});
+    peak.generate().catch(function(error){done();});
   })
 
   it('should create directory', function (done) {
@@ -517,7 +517,7 @@ describe('deployer', function () {
 
   it('should throw exception if credentials are invalid', function (done) {
     var peak = new Peak(join(fixtures, 'deployer', 'invalid'), {email: "foo@bar.com", password: "!@#$%^&"});
-    peak.deploy().catch(function(){done()});
+    peak.deploy().catch(function(error){done()});
   })
 
 })
