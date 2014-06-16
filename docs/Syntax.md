@@ -21,7 +21,7 @@ HTML      <!-- #(Photo) -->
             </div>
           <!-- ## -->
 
-Jade      // #Photo
+Jade      // #(Photo)
             div.post
           // ##
 ```
