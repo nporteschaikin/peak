@@ -40,12 +40,105 @@ $ npm install peak -g
 4. Using a browser, navigate to localhost:1111.
 5. To deploy your theme to Tumblr, run `peak deploy` from your project's root folder.
 
-## Getting Started
+## Syntax
+
+**[Peak includes language-agnostic syntax](docs/Syntax.md)** for incorporating Tumblr tags in HTML, CSS, and JavaScript along with Peak-specific tags to further simplify Tumblr development.
+
+Take, for example, this HTML:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>!(Title)</title>
+    <!-- +(src: 'style.styl' media: 'all') -->
+    <!-- +(src: 'main.coffee') -->
+  </head>
+  <body>
+    <img src="@(images/peak.jpg)" />
+    <!-- #(Posts) -->
+      <article>
+        <h1>!(Title)</h1>
+      </article>
+    <!-- ## -->
+  </body>
+</html>
+```
+
+Peak includes unique syntax for:
+
+- inlining a theme (HTML, CSS or JavaScript).
+  ```html
+  <!-- +(src: 'style.styl' media: 'all') -->
+  <!-- +(src: 'main.coffee') -->
+  ```
+
+- applying base URLs to external assets specific to watching or deploying.
+  ```html
+  <img src="@(images/peak.jpg)" />
+  ```
+
+When watching the theme, Peak will render Tumblr tags with the specified blog's context, like so:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Peak Blog</title>
+    <style type="text/css" media="all">
+    body { background: white; }
+    </style>
+    <script type="text/javascript">
+    alert('Hello World');
+    </script>
+  </head>
+  <body>
+    <img src="http://my-s3-bucket.com/dev/images/peak.jpg" />
+    <article>
+      <h1>Post 1</h1>
+    </article>
+    <article>
+      <h1>Post 2</h1>
+    </article>
+    <article>
+      <h1>Post 3</h1>
+    </article>
+  </body>
+</html>
+```
+
+However, on deploy, Peak will compile Tumblr tags in their standard syntax:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{Title}</title>
+    <style type="text/css" media="all">
+    body { background: white; }
+    </style>
+    <script type="text/javascript">
+    alert('Hello World');
+    </script>
+  </head>
+  <body>
+    <img src="http://my-s3-bucket.com/production/images/peak.jpg" />
+    {block:Posts}
+      <article>
+        <h1>{Title}</h1>
+      </article>
+    {/block:Posts}
+  </body>
+</html>
+```
+
+For more, check out the [Syntax](docs/Syntax.md) docs.
+
+## Documentation
 
 - [Configuration](docs/Configuration.md)
 - [Syntax](docs/Syntax.md)
 - [Languages](docs/Languages.md)
-
 
 ## License & Contributing
 
