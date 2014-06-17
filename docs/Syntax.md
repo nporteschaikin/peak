@@ -21,8 +21,16 @@ HTML      <!-- #(Photo) -->
             </div>
           <!-- ## -->
 
+Haml      / #(Photo)
+          div.post
+          / ##
+
 Jade      // #(Photo)
-            div.post
+          div.post
+          // ##
+
+Sneak     // #(Photo)
+          div.post
           // ##
 ```
 
@@ -34,6 +42,10 @@ CSS       /* #(Photo) */
             background: #000;
           }
           /* ## */
+
+Less      // #(Photo)
+            background: #000;
+          // ##
 
 Stylus    // #(Photo)
             background: #000;
@@ -50,7 +62,6 @@ JS        // #(Photo)
 Coffee    / #(Photo)
             console.log 'A photo!'
           / ##
-
 ```
 
 ### General tags
@@ -64,13 +75,21 @@ Coffee    / #(Photo)
 ```
 HTML      <header>!(name)</header>
 
+Haml      %header !(name)
+
 Jade      header !(name)
+
+Sneak     header !(name)
 ```
 
 ##### CSS
 
 ```
 CSS       .post {
+            color: !(name);
+          }
+
+Less      .post {
             color: !(name);
           }
 
@@ -82,8 +101,8 @@ Stylus    .post
 
 ```
 JS        console.log('!(name)')
-Coffee    console.log '!(name)'
 
+Coffee    console.log '!(name)'
 ```
 
 ## Custom Tags
@@ -94,12 +113,25 @@ Inline an external HTML, JavaScript or CSS theme.  Peak will automatically compi
 
 ```
 HTML      <!-- +(src: "style.css" media: "all") -->
+
+Haml      / +(src: "style.css" media: "all")
+
 Jade      // +(src: "style.css" media: "all")
 
-CSS       /* +(src: "style.css") */
-Stylus    // +(src: "style.css")
+Sneak     // +(src: "style.css" media: "all")
+```
 
+```
+CSS       /* +(src: "style.css") */
+
+Less      // +(src: "style.css")
+
+Stylus    // +(src: "style.css")
+```
+
+```
 JS        // +(src: "carousel.js")
+
 Coffee    // +(src: "carousel.coffee")
 ```
 
@@ -143,15 +175,30 @@ Configure different base URLs for watching and deploying.
 
 ```
 HTML      <img src="@(images/peak.jpg)" />
+
+Haml      %img{src: "@(images/peak.jpg)"}
+
 Jade      img(src="@(images/peak.jpg)")
 
+Sneak     img(src: "@(images/peak.jpg)")
+```
+
+```
 CSS       body {
             background: url("@(images/peak.jpg)")
           }
+
+Less      body {
+            background: url("@(images/peak.jpg)")
+          }
+
 Stylus    body
             background: url("@(images/peak.jpg)");
+```
 
+```
 JS        var logo = "@(images/peak.jpg)";
+
 Coffee    logo = "@(images/peak.jpg)"
 ```
 
