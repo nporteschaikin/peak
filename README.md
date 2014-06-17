@@ -14,7 +14,7 @@ Peak is a node toolkit for developing and deploying Tumblr themes.
 via npm:
 
 ```
-$ npm install peak -g
+$ npm install peak@pre -g
 ```
 
 ### Usage
