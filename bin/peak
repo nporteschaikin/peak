@@ -18,8 +18,9 @@ var Parse = function Parse () {
   generate.addArgument(['-p', '--password'], { help: 'tumblr password' });
   generate.addArgument(['-b', '--blog'],  { help: 'tumblr blog name' });
 
-  watch.addArgument(['-p', '--path'], { help: 'source path' });
+  watch.addArgument(['--path'], { help: 'source path' });
   watch.addArgument(['-b', '--blog'],  { help: 'blog to use as context' });
+  watch.addArgument(['-p', '--port'],  { help: 'port to run server' });
 
   deploy.addArgument(['-i', '--index'], { help: 'theme to deploy' });
   deploy.addArgument(['-e', '--email'], { help: 'tumblr e-mail address' });
