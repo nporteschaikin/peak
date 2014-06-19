@@ -1,8 +1,8 @@
 var Peak = require('../')
   , Commands = require('../lib/commands')
-  , Lexer = require('../lib/compiler/lexer')
-  , Parser = require('../lib/compiler/parser')
-  , Compiler = require('../lib/compiler')
+  , Lexer = require('../lib/theme/lexer')
+  , Parser = require('../lib/theme/parser')
+  , Compiler = require('../lib/theme/compiler')
   , Adapter = require('../lib/adapter')
 
   , chai = require('chai')
