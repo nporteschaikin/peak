@@ -2,8 +2,8 @@ var Peak = require('../')
   , Commands = require('../lib/commands')
   , Lexer = require('../lib/compiler/lexer')
   , Parser = require('../lib/compiler/parser')
-  , Adapter = require('../lib/compiler/adapter')
   , Compiler = require('../lib/compiler')
+  , Adapter = require('../lib/adapter')
 
   , chai = require('chai')
   , fs = require('fs')
@@ -314,32 +314,32 @@ describe('parser', function () {
 describe('adapter', function () {
 
   it('should return js kind if ext is .coffee', function () {
-    var adapter = Adapter('$ ->\nconsole.log \'test\'', { path: 'test.coffee' });
+    var adapter = new Adapter('$ ->\nconsole.log \'test\'', { path: 'test.coffee' });
     adapter.kind.name.should.eq('javascript');
   })
 
   it('should return html kind if ext is .jade', function () {
-    var adapter = Adapter('html\n  head', { path: 'test.jade' });
+    var adapter = new Adapter('html\n  head', { path: 'test.jade' });
     adapter.kind.name.should.eq('html');
   })
 
   it('should return html kind if ext is .sneak', function () {
-    var adapter = Adapter('html\n  head', { path: 'test.sneak' });
+    var adapter = new Adapter('html\n  head', { path: 'test.sneak' });
     adapter.kind.name.should.eq('html');
   })
 
   it('should return html kind if ext is .haml', function () {
-    var adapter = Adapter('%html', { path: 'test.haml' });
+    var adapter = new Adapter('%html', { path: 'test.haml' });
     adapter.kind.name.should.eq('html');
   })
 
   it('should return css kind if ext is .styl', function () {
-    var adapter = Adapter('body\n  background: black', { path: 'test.styl' });
+    var adapter = new Adapter('body\n  background: black', { path: 'test.styl' });
     adapter.kind.name.should.eq('css');
   })
 
   it('should return css kind if ext is .less', function () {
-    var adapter = Adapter('body { &.index { background: blue; } }', { path: 'test.less' });
+    var adapter = new Adapter('body { &.index { background: blue; } }', { path: 'test.less' });
     adapter.kind.name.should.eq('css');
   })
 
@@ -528,7 +528,7 @@ describe('watcher', function (){
 
 describe('deployer', function () {
 
-  this.timeout(10000);
+  this.timeout(20000);
 
   it('should throw exception if credentials are invalid', function (done) {
     var peak = new Peak(join(fixtures, 'deployer', 'invalid'), {email: "foo@bar.com", password: "!@#$%^&"});
