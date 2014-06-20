@@ -1,3 +1,5 @@
+output_path: .peak
+port: 1111
 watch: {}
 deploy: {}
 index: index.jade

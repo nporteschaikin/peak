@@ -351,19 +351,19 @@ describe('compiler', function () {
 
     it('should render one of block if context is true', function () {
       var compiler = new Compiler('<!-- #(Test) --><div></div><!-- ## -->', { with: 'html' });
-      compiler.compile()(null, {'block:Test': true})
+      compiler.compile()({'block:Test': true})
         .should.eq('<div></div>');
     })
 
     it('should render two of block if context is array with two elements', function () {
       var compiler = new Compiler('<!-- #(Test) --><div></div><!-- ## -->', { with: 'html' });
-      compiler.compile()(null, {'block:Test': [{foo: 'bar'}, {foo: 'bar'}]})
+      compiler.compile()({'block:Test': [{foo: 'bar'}, {foo: 'bar'}]})
         .should.eq('<div></div><div></div>');
     })
 
     it('should use block as context if block is object', function () {
       var compiler = new Compiler('<!-- #(Test) --><div>!(foo)</div><!-- ## -->', { with: 'html' });
-      compiler.compile()(null, {'block:Test': {foo: 'bar'}})
+      compiler.compile()({'block:Test': {foo: 'bar'}})
         .should.eq('<div>bar</div>');
     })
 
@@ -373,7 +373,7 @@ describe('compiler', function () {
 
     it('should render url with base if specified', function () {
       var compiler = new Compiler('@(images/doge.jpg)', { with: 'html' });
-      compiler.compile()({url: 'http://www.tumblr.com/'})
+      compiler.compile()(null, {url: 'http://www.tumblr.com/'})
         .should.eq('http://www.tumblr.com/images/doge.jpg');
     })
 
@@ -474,7 +474,7 @@ describe('watcher', function (){
       , peak;
     helpers.rmdir(dir, function () {
       peak = new Peak(path, {index: 'index.html'});
-      peak.watch().then(function () {
+      peak.watch().done(function () {
         exists(dir).should.be.true;
         peak.emitter.emit('exit');
         done();
@@ -489,7 +489,7 @@ describe('watcher', function (){
     helpers.rmdir(dir, function () {
       peak = new Peak(path, {blog: 'shipdeploy'});
       peak.watch().then(function () {
-        read(join(dir, 'index.html'), 'utf8').should.eq('shipdeploy\n');
+        read(join(dir, 'index.html'), 'utf8').should.eq('<div>shipdeploy</div>\n');
         peak.emitter.emit('exit');
         done();
       });
