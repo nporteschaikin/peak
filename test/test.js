@@ -1,9 +1,10 @@
 var Peak = require('../')
   , Commands = require('../lib/commands')
-  , Lexer = require('../lib/theme/lexer')
-  , Parser = require('../lib/theme/parser')
-  , Compiler = require('../lib/theme/compiler')
   , Adapter = require('../lib/adapter')
+  , Theme = require('../lib/theme')
+  , ThemeLexer = require('../lib/theme/lexer')
+  , ThemeParser = require('../lib/theme/parser')
+  , ThemeCompiler = require('../lib/theme/compiler')
 
   , chai = require('chai')
   , fs = require('fs')
@@ -88,229 +89,6 @@ describe('cli', function () {
 
 })
 
-describe('lexer', function () {
-
-  describe('html', function () {
-
-    it('should return open token', function () {
-      var lexer = new Lexer('<!-- #(Test) -->', {name: 'html'});
-      lexer.exec()
-        .should.include({type: 'open', capture: '<!-- #(Test) -->', value: 'Test'})
-    })
-
-    it('should return close token', function () {
-      var lexer = new Lexer('<!-- ## -->', {name: 'html'});
-      lexer.exec()
-        .should.include({type: 'close', capture: '<!-- ## -->', value: undefined})
-    })
-
-    it('should return variable token', function () {
-      var lexer = new Lexer('!(Test)', {name: 'html'});
-      lexer.exec()
-        .should.include({type: 'variable', capture: '!(Test)', value: 'Test'})
-    })
-
-    it('should return url token', function () {
-      var lexer = new Lexer('@(images/doge.jpg)', {name: 'html'});
-      lexer.exec()
-        .should.include({type: 'url', capture: '@(images/doge.jpg)', value: 'images/doge.jpg'})
-    })
-
-    it('should return include token', function () {
-      var lexer = new Lexer('<!-- +(src: "test.css" media: "all") -->', {name: 'html'});
-      lexer.exec()
-        .should.include({type: 'include', capture: '<!-- +(src: "test.css" media: "all") -->', value: {src: 'test.css', media: 'all'}})
-    })
-
-    it('should return string token', function () {
-      var lexer = new Lexer('<html>', {name: 'html'});
-      lexer.exec()
-        .should.include({type: 'string', capture: '<html>', value: '<html>'})
-    })
-
-  })
-
-  describe('css', function () {
-
-    it('should return open token', function () {
-      var lexer = new Lexer('/* #(Test) */', {name: 'css'});
-      lexer.exec()
-        .should.include({type: 'open', capture: '/* #(Test) */', value: 'Test'})
-    })
-
-    it('should return close token', function () {
-      var lexer = new Lexer('/* ## */', {name: 'css'});
-      lexer.exec()
-        .should.include({type: 'close', capture: '/* ## */', value: undefined})
-    })
-
-    it('should return variable token', function () {
-      var lexer = new Lexer('!(Test)', {name: 'css'});
-      lexer.exec()
-        .should.include({type: 'variable', capture: '!(Test)', value: 'Test'})
-    })
-
-    it('should return url token', function () {
-      var lexer = new Lexer('@(images/doge.jpg)', {name: 'css'});
-      lexer.exec()
-        .should.include({type: 'url', capture: '@(images/doge.jpg)', value: 'images/doge.jpg'})
-    })
-
-    it('should return include token', function () {
-      var lexer = new Lexer('/* +(src: "test.css") */', {name: 'css'});
-      lexer.exec()
-        .should.include({type: 'include', capture: '/* +(src: "test.css") */', value: {src: 'test.css'}})
-    })
-
-    it('should return string token', function () {
-      var lexer = new Lexer('body { background: #000; }', {name: 'css'});
-      lexer.exec()
-        .should.include({type: 'string', capture: 'body { background: #000; }', value: 'body { background: #000; }'})
-    })
-
-  })
-
-  describe('javascript', function () {
-
-    it('should return open token', function () {
-      var lexer = new Lexer('// #(Test)', {name: 'javascript'});
-      lexer.exec()
-        .should.include({type: 'open', capture: '// #(Test)', value: 'Test'})
-    })
-
-    it('should return close token', function () {
-      var lexer = new Lexer('// ##', {name: 'javascript'});
-      lexer.exec()
-        .should.include({type: 'close', capture: '// ##', value: undefined})
-    })
-
-    it('should return variable token', function () {
-      var lexer = new Lexer('!(Test)', {name: 'javascript'});
-      lexer.exec()
-        .should.include({type: 'variable', capture: '!(Test)', value: 'Test'})
-    })
-
-    it('should return url token', function () {
-      var lexer = new Lexer('@(images/doge.jpg)', {name: 'javascript'});
-      lexer.exec()
-        .should.include({type: 'url', capture: '@(images/doge.jpg)', value: 'images/doge.jpg'})
-    })
-
-    it('should return include token', function () {
-      var lexer = new Lexer('// +(src: "test.js")', {name: 'javascript'});
-      lexer.exec()
-        .should.include({type: 'include', capture: '// +(src: "test.js")', value: {src: 'test.js'}})
-    })
-
-    it('should return string token', function () {
-      var lexer = new Lexer('var foo = bar;', {name: 'javascript'});
-      lexer.exec()
-        .should.include({type: 'string', capture: 'var foo = bar;', value: 'var foo = bar;'})
-    })
-
-  })
-
-})
-
-describe('parser', function () {
-
-  it('should return nil if adapter does not exist', function () {
-    var parser = new Parser('var foo = bar;', 'foo');
-    (parser.parse() === undefined).should.be.true;
-  })
-
-  it('should return valid kind via path', function () {
-    var parser = new Parser('foo = bar', {path: 'test.coffee'});
-    parser.parse();
-    parser.kind.name.should.eq('javascript');
-  })
-
-  describe('html', function () {
-
-    it('should return block node', function () {
-      var parser = new Parser('<!-- #(Test) -->Foo<!-- ## -->', { with: 'html' });
-      parser.parse().should.include(
-        {type: 'block', name: 'Test', nodes: [{ type: 'string', value: 'Foo' }]});
-    })
-
-    it('should return variable node', function () {
-      var parser = new Parser('!(Test)', { with: 'html' });
-      parser.parse().should.include(
-        {type: 'variable', value: 'Test'});
-    })
-
-    it('should return url node', function () {
-      var parser = new Parser('@(images/doge.jpg)', { with: 'html' });
-      parser.parse().should.include(
-        {type: 'url', value: 'images/doge.jpg'});
-    })
-
-    it('should return include node', function () {
-      var parser = new Parser('<!-- +(src: "test.css") -->', { path: join(fixtures, 'parser', 'html', 'include', 'index.html') });
-      parser.parse().should.include(
-        {type: 'include', open: '<style type="text/css">', close: '</style>', nodes: [{type: 'string', value: 'body { background: black; }\n'}]});
-    })
-
-  })
-
-  describe('css', function () {
-
-    it('should return block node', function () {
-      var parser = new Parser('/* #(Test) */Foo/* ## */', { with: 'css' });
-      parser.parse().should.include(
-        {type: 'block', name: 'Test', nodes: [{ type: 'string', value: 'Foo' }]});
-    })
-
-    it('should return variable node', function () {
-      var parser = new Parser('!(Test)', { with: 'css' });
-      parser.parse().should.include(
-        {type: 'variable', value: 'Test'});
-    })
-
-    it('should return url node', function () {
-      var parser = new Parser('@(images/doge.jpg)', { with: 'css' });
-      parser.parse().should.include(
-        {type: 'url', value: 'images/doge.jpg'});
-    })
-
-    it('should return include node', function () {
-      var parser = new Parser('/* +(src: "test.css") */', { path: join(fixtures, 'parser', 'css', 'include', 'style.css') });
-      parser.parse().should.include(
-        {type: 'include', nodes: [{type: 'string', value: 'body { background: black; }\n'}]});
-    })
-
-  })
-
-  describe('javascript', function () {
-
-    it('should return block node', function () {
-      var parser = new Parser('// #(Test)\nFoo\n// ##', { with: 'js' });
-      parser.parse().should.include(
-        {type: 'block', name: 'Test', nodes: [{ type: 'string', value: 'Foo\n' }]});
-    })
-
-    it('should return variable node', function () {
-      var parser = new Parser('!(Test)', { with: 'js' });
-      parser.parse().should.include(
-        {type: 'variable', value: 'Test'});
-    })
-
-    it('should return url node', function () {
-      var parser = new Parser('@(images/doge.jpg)', { with: 'js' });
-      parser.parse().should.include(
-        {type: 'url', value: 'images/doge.jpg'});
-    })
-
-    it('should return include node', function () {
-      var parser = new Parser('// +(src: "test.js")', { path: join(fixtures, 'parser', 'javascript', 'include', 'main.js') });
-      parser.parse().should.include(
-        {type: 'include', nodes: [{type: 'string', value: 'alert(\'foo\');\n'}]});
-    })
-
-  })
-
-})
-
 describe('adapter', function () {
 
   it('should return js kind if ext is .coffee', function () {
@@ -345,57 +123,298 @@ describe('adapter', function () {
 
 })
 
-describe('compiler', function () {
+describe('theme', function () {
 
-  describe('blocks', function () {
+  describe('base', function () {
 
-    it('should render one of block if context is true', function () {
-      var compiler = new Compiler('<!-- #(Test) --><div></div><!-- ## -->', { with: 'html' });
-      compiler.compile()({'block:Test': true})
-        .should.eq('<div></div>');
+    it('should render theme', function () {
+      var theme = new Theme('html', {with: 'jade'});
+      theme.render().should.eq('\n<html></html>');
     })
 
-    it('should render two of block if context is array with two elements', function () {
-      var compiler = new Compiler('<!-- #(Test) --><div></div><!-- ## -->', { with: 'html' });
-      compiler.compile()({'block:Test': [{foo: 'bar'}, {foo: 'bar'}]})
-        .should.eq('<div></div><div></div>');
-    })
-
-    it('should use block as context if block is object', function () {
-      var compiler = new Compiler('<!-- #(Test) --><div>!(foo)</div><!-- ## -->', { with: 'html' });
-      compiler.compile()({'block:Test': {foo: 'bar'}})
-        .should.eq('<div>bar</div>');
+    it('should compile theme', function () {
+      var theme = new Theme('html', {with: 'jade'});
+      theme.compile().should.be.an.instanceof(Function);
     })
 
   })
 
-  describe('url', function () {
+  describe('lexer', function () {
 
-    it('should render url with base if specified', function () {
-      var compiler = new Compiler('@(images/doge.jpg)', { with: 'html' });
-      compiler.compile()(null, {url: 'http://www.tumblr.com/'})
-        .should.eq('http://www.tumblr.com/images/doge.jpg');
+    describe('html', function () {
+
+      it('should return open token', function () {
+        var lexer = new ThemeLexer('<!-- #(Test) -->', {name: 'html'});
+        lexer.exec()
+          .should.include({type: 'open', capture: '<!-- #(Test) -->', value: 'Test'})
+      })
+
+      it('should return close token', function () {
+        var lexer = new ThemeLexer('<!-- ## -->', {name: 'html'});
+        lexer.exec()
+          .should.include({type: 'close', capture: '<!-- ## -->', value: undefined})
+      })
+
+      it('should return variable token', function () {
+        var lexer = new ThemeLexer('!(Test)', {name: 'html'});
+        lexer.exec()
+          .should.include({type: 'variable', capture: '!(Test)', value: 'Test'})
+      })
+
+      it('should return url token', function () {
+        var lexer = new ThemeLexer('@(images/doge.jpg)', {name: 'html'});
+        lexer.exec()
+          .should.include({type: 'url', capture: '@(images/doge.jpg)', value: 'images/doge.jpg'})
+      })
+
+      it('should return include token', function () {
+        var lexer = new ThemeLexer('<!-- +(src: "test.css" media: "all") -->', {name: 'html'});
+        lexer.exec()
+          .should.include({type: 'include', capture: '<!-- +(src: "test.css" media: "all") -->', value: {src: 'test.css', media: 'all'}})
+      })
+
+      it('should return string token', function () {
+        var lexer = new ThemeLexer('<html>', {name: 'html'});
+        lexer.exec()
+          .should.include({type: 'string', capture: '<html>', value: '<html>'})
+      })
+
     })
 
-    it('should render url if no base is specified', function () {
-      var compiler = new Compiler('@(images/doge.jpg)', { with: 'html' });
-      compiler.compile()()
-        .should.eq('images/doge.jpg');
+    describe('css', function () {
+
+      it('should return open token', function () {
+        var lexer = new ThemeLexer('/* #(Test) */', {name: 'css'});
+        lexer.exec()
+          .should.include({type: 'open', capture: '/* #(Test) */', value: 'Test'})
+      })
+
+      it('should return close token', function () {
+        var lexer = new ThemeLexer('/* ## */', {name: 'css'});
+        lexer.exec()
+          .should.include({type: 'close', capture: '/* ## */', value: undefined})
+      })
+
+      it('should return variable token', function () {
+        var lexer = new ThemeLexer('!(Test)', {name: 'css'});
+        lexer.exec()
+          .should.include({type: 'variable', capture: '!(Test)', value: 'Test'})
+      })
+
+      it('should return url token', function () {
+        var lexer = new ThemeLexer('@(images/doge.jpg)', {name: 'css'});
+        lexer.exec()
+          .should.include({type: 'url', capture: '@(images/doge.jpg)', value: 'images/doge.jpg'})
+      })
+
+      it('should return include token', function () {
+        var lexer = new ThemeLexer('/* +(src: "test.css") */', {name: 'css'});
+        lexer.exec()
+          .should.include({type: 'include', capture: '/* +(src: "test.css") */', value: {src: 'test.css'}})
+      })
+
+      it('should return string token', function () {
+        var lexer = new ThemeLexer('body { background: #000; }', {name: 'css'});
+        lexer.exec()
+          .should.include({type: 'string', capture: 'body { background: #000; }', value: 'body { background: #000; }'})
+      })
+
+    })
+
+    describe('javascript', function () {
+
+      it('should return open token', function () {
+        var lexer = new ThemeLexer('// #(Test)', {name: 'javascript'});
+        lexer.exec()
+          .should.include({type: 'open', capture: '// #(Test)', value: 'Test'})
+      })
+
+      it('should return close token', function () {
+        var lexer = new ThemeLexer('// ##', {name: 'javascript'});
+        lexer.exec()
+          .should.include({type: 'close', capture: '// ##', value: undefined})
+      })
+
+      it('should return variable token', function () {
+        var lexer = new ThemeLexer('!(Test)', {name: 'javascript'});
+        lexer.exec()
+          .should.include({type: 'variable', capture: '!(Test)', value: 'Test'})
+      })
+
+      it('should return url token', function () {
+        var lexer = new ThemeLexer('@(images/doge.jpg)', {name: 'javascript'});
+        lexer.exec()
+          .should.include({type: 'url', capture: '@(images/doge.jpg)', value: 'images/doge.jpg'})
+      })
+
+      it('should return include token', function () {
+        var lexer = new ThemeLexer('// +(src: "test.js")', {name: 'javascript'});
+        lexer.exec()
+          .should.include({type: 'include', capture: '// +(src: "test.js")', value: {src: 'test.js'}})
+      })
+
+      it('should return string token', function () {
+        var lexer = new ThemeLexer('var foo = bar;', {name: 'javascript'});
+        lexer.exec()
+          .should.include({type: 'string', capture: 'var foo = bar;', value: 'var foo = bar;'})
+      })
+
     })
 
   })
 
-  describe('include', function () {
+  describe('parser', function () {
 
-    it('should wrap in enclosure if enclosure for kind specified in map', function () {
-      var compiler = new Compiler('<!-- +(src: "test.css") -->', { path: join(fixtures, 'compiler', 'include', 'index.html') });
-      compiler.compile()()
-        .should.eq('<style type="text/css">body { background: black; }\n</style>');
+    it('should return nil if adapter does not exist', function () {
+      var parser = new ThemeParser('var foo = bar;', 'foo');
+      (parser.parse() === undefined).should.be.true;
+    })
+
+    it('should return valid kind via path', function () {
+      var parser = new ThemeParser('foo = bar', {path: 'test.coffee'});
+      parser.parse();
+      parser.kind.name.should.eq('javascript');
+    })
+
+    describe('html', function () {
+
+      it('should return block node', function () {
+        var parser = new ThemeParser('<!-- #(Test) -->Foo<!-- ## -->', { with: 'html' });
+        parser.parse().should.include(
+          {type: 'block', name: 'Test', nodes: [{ type: 'string', value: 'Foo' }]});
+      })
+
+      it('should return variable node', function () {
+        var parser = new ThemeParser('!(Test)', { with: 'html' });
+        parser.parse().should.include(
+          {type: 'variable', value: 'Test'});
+      })
+
+      it('should return url node', function () {
+        var parser = new ThemeParser('@(images/doge.jpg)', { with: 'html' });
+        parser.parse().should.include(
+          {type: 'url', value: 'images/doge.jpg'});
+      })
+
+      it('should return include node', function () {
+        var parser = new ThemeParser('<!-- +(src: "test.css") -->', { path: join(fixtures, 'parser', 'html', 'include', 'index.html') });
+        parser.parse().should.include(
+          {type: 'include', open: '<style type="text/css">', close: '</style>', nodes: [{type: 'string', value: 'body { background: black; }\n'}]});
+      })
+
+    })
+
+    describe('css', function () {
+
+      it('should return block node', function () {
+        var parser = new ThemeParser('/* #(Test) */Foo/* ## */', { with: 'css' });
+        parser.parse().should.include(
+          {type: 'block', name: 'Test', nodes: [{ type: 'string', value: 'Foo' }]});
+      })
+
+      it('should return variable node', function () {
+        var parser = new ThemeParser('!(Test)', { with: 'css' });
+        parser.parse().should.include(
+          {type: 'variable', value: 'Test'});
+      })
+
+      it('should return url node', function () {
+        var parser = new ThemeParser('@(images/doge.jpg)', { with: 'css' });
+        parser.parse().should.include(
+          {type: 'url', value: 'images/doge.jpg'});
+      })
+
+      it('should return include node', function () {
+        var parser = new ThemeParser('/* +(src: "test.css") */', { path: join(fixtures, 'parser', 'css', 'include', 'style.css') });
+        parser.parse().should.include(
+          {type: 'include', nodes: [{type: 'string', value: 'body { background: black; }\n'}]});
+      })
+
+    })
+
+    describe('javascript', function () {
+
+      it('should return block node', function () {
+        var parser = new ThemeParser('// #(Test)\nFoo\n// ##', { with: 'js' });
+        parser.parse().should.include(
+          {type: 'block', name: 'Test', nodes: [{ type: 'string', value: 'Foo\n' }]});
+      })
+
+      it('should return variable node', function () {
+        var parser = new ThemeParser('!(Test)', { with: 'js' });
+        parser.parse().should.include(
+          {type: 'variable', value: 'Test'});
+      })
+
+      it('should return url node', function () {
+        var parser = new ThemeParser('@(images/doge.jpg)', { with: 'js' });
+        parser.parse().should.include(
+          {type: 'url', value: 'images/doge.jpg'});
+      })
+
+      it('should return include node', function () {
+        var parser = new ThemeParser('// +(src: "test.js")', { path: join(fixtures, 'parser', 'javascript', 'include', 'main.js') });
+        parser.parse().should.include(
+          {type: 'include', nodes: [{type: 'string', value: 'alert(\'foo\');\n'}]});
+      })
+
     })
 
   })
 
-})
+  describe('compiler', function () {
+
+    describe('blocks', function () {
+
+      it('should render one of block if context is true', function () {
+        var compiler = new ThemeCompiler('<!-- #(Test) --><div></div><!-- ## -->', { with: 'html' });
+        compiler.compile()({'block:Test': true})
+          .should.eq('<div></div>');
+      })
+
+      it('should render two of block if context is array with two elements', function () {
+        var compiler = new ThemeCompiler('<!-- #(Test) --><div></div><!-- ## -->', { with: 'html' });
+        compiler.compile()({'block:Test': [{foo: 'bar'}, {foo: 'bar'}]})
+          .should.eq('<div></div><div></div>');
+      })
+
+      it('should use block as context if block is object', function () {
+        var compiler = new ThemeCompiler('<!-- #(Test) --><div>!(foo)</div><!-- ## -->', { with: 'html' });
+        compiler.compile()({'block:Test': {foo: 'bar'}})
+          .should.eq('<div>bar</div>');
+      })
+
+    })
+
+    describe('url', function () {
+
+      it('should render url with base if specified', function () {
+        var compiler = new ThemeCompiler('@(images/doge.jpg)', { with: 'html' });
+        compiler.compile()(null, {url: 'http://www.tumblr.com/'})
+          .should.eq('http://www.tumblr.com/images/doge.jpg');
+      })
+
+      it('should render url if no base is specified', function () {
+        var compiler = new ThemeCompiler('@(images/doge.jpg)', { with: 'html' });
+        compiler.compile()()
+          .should.eq('images/doge.jpg');
+      })
+
+    })
+
+    describe('include', function () {
+
+      it('should wrap in enclosure if enclosure for kind specified in map', function () {
+        var compiler = new ThemeCompiler('<!-- +(src: "test.css") -->', { path: join(fixtures, 'compiler', 'include', 'index.html') });
+        compiler.compile()()
+          .should.eq('<style type="text/css">body { background: black; }\n</style>');
+      })
+
+    })
+
+  })
+
+});
 
 describe('generator', function () {
 
