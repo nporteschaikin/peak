@@ -22,7 +22,7 @@
   "dependencies": {
     "argparse": "0.x",
     "cheerio": "0.12.x",
-    "chokidar": "0.x",
+    "chokidar": "0.8.2",
     "colors": "0.x",
     "connect": "2.x",
     "js-yaml": "3.x",
