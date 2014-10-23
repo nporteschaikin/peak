@@ -14,7 +14,7 @@ var Parse = function Parse () {
 
   generate.addArgument(['path'], { help: 'path to new project' });
   generate.addArgument(['-i', '--index'],  { help: 'path to index file' });
-  generate.addArgument(['-e', '--blog'], { help: 'tumblr blog to use as context and to deploy to' });
+  generate.addArgument(['-b', '--blog'], { help: 'tumblr blog to use as context and to deploy to' });
   generate.addArgument(['-e', '--email'], { help: 'tumblr blog e-mail address' });
   generate.addArgument(['-p', '--password'], { help: 'tumblr blog password' });
 
@@ -23,13 +23,12 @@ var Parse = function Parse () {
   watch.addArgument(['-i', '--index'],  { help: 'path to index file' });
   watch.addArgument(['-b', '--blog'],  { help: 'tumblr blog to use as context' });
   watch.addArgument(['-e', '--email'], { help: 'tumblr blog e-mail address' });
-  watch.addArgument(['-p', '--password'], { help: 'tumblr blog password' });
+  watch.addArgument(['-P', '--password'], { help: 'tumblr blog password' });
 
   deploy.addArgument(['-i', '--index'], { help: 'theme to deploy' });
   deploy.addArgument(['-b', '--blog'],  { help: 'tumblr blog to deploy to' });
   deploy.addArgument(['-e', '--email'], { help: 'tumblr blog e-mail address' });
   deploy.addArgument(['-p', '--password'], { help: 'tumblr blog password' });
-  deploy.addArgument(['-b', '--blog'],  { help: 'blog to deploy to' });
 
   this.args = parser.parseArgs();
 }
