@@ -487,6 +487,8 @@ describe('generator', function () {
 
 describe('watcher', function (){
 
+  this.timeout(10000);
+
   it('should create .peak folder', function (done) {
     var path = join(fixtures, 'watcher', 'folder')
       , dir = join(path, '.peak')
@@ -506,7 +508,7 @@ describe('watcher', function (){
       , dir = join(path, '.peak')
       , peak;
     helpers.rmdir(dir, function () {
-      peak = new Peak(path, {blog: 'shipdeploy'});
+      peak = new Peak(path, {blog: 'shipdeploy', email: 'ship@carrotcreative.com', password: 'carrotcreative'});
       peak.watch().then(function () {
         read(join(dir, 'index.html'), 'utf8').should.eq('<div>shipdeploy</div>\n');
         peak.emitter.emit('exit');
