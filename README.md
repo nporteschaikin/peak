@@ -25,7 +25,7 @@ $ npm install peak -g
   $ peak new mytheme
   ```
 
-  where `mytheme` is the path of the folder you'd like to create.  Optionally, run `peak new` with flags to configure your project (see [configuration options](#configuration)).
+  where `mytheme` is the path of the folder you'd like to create.  Optionally, run `peak new` with flags to configure your project (see [configuration options](docs/Configuration.md)).
 2. Change directory to `mytheme` and start the watcher:
 
   ```
@@ -35,8 +35,8 @@ $ npm install peak -g
 
   Run with `--help` or `-h` for options.
 3. Write your Tumblr theme!
-  - See the [syntax](#Syntax) section for Peak's language-friendly syntax for incorporating Tumblr tags/blocks and more.
-  - See the [languages](docs/Languages.md) section for supported template languages.
+  - See the [syntax](docs/Syntax.md) docs for Peak's language-friendly syntax for incorporating Tumblr tags/blocks and more.
+  - See the [languages](docs/Languages.md) docs for supported template languages.
 4. Using a browser, navigate to localhost:1111.
 5. To deploy your theme to Tumblr, run `peak deploy` from your project's root folder.
 
