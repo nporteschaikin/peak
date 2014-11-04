@@ -82,7 +82,7 @@ describe('cli', function () {
           blog: 'shipdeploy'
         });
 
-      cli.init().done(done);
+      cli.init().done(function(){done()});
     })
 
   })
