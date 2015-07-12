@@ -1,0 +1,28 @@
+// A task runner that calls mocha (requires mocha be installed `npm install mocha`)
+{
+	"version": "0.1.0",
+	"command": "mocha",
+	"isShellCommand": true,
+	"tasks": [
+		{
+			"args": [
+				"--reporter", "min"
+			],
+			"taskName": "test",
+			// Make this the default test command.
+			"isTestCommand": true,
+			// Show the output window only if unrecognized errors occur.
+			"showOutput": "silent",
+			// Use the standard less compilation problem matcher.
+			"problemMatcher": {
+				"owner": "mocha",
+				"fileLocation": ["relative", "${workspaceRoot"],
+				"pattern": {
+					"regexp": ".*(.)\\) (.*):.*",
+					"file": 1,
+					"message": 2
+				}
+			}
+		}
+	]
+}

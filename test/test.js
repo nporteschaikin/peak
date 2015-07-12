@@ -289,6 +289,30 @@ describe('theme', function () {
         parser.parse().should.include(
           {type: 'variable', value: 'Test'});
       })
+      
+      it('should return variable node with {}', function() {
+        var parser = new ThemeParser('{Test}', { with: 'html' });
+        parser.parse().should.include(
+          { type: 'variable', value: 'Test' }
+        );
+      });
+      
+      it('should detect plain like button', function() {
+        var parser = new ThemeParser('{LikeButton}', {with: 'html' });
+        var parserOutput = parser.parse();
+        parserOutput.should.include(
+          { type: 'button', value: 'Like', attrs: {} }
+        );
+      });
+      
+      it('should detect like button with attributes', function() {
+        var parser = new ThemeParser('{LikeButton color="black" size="16"}', { with: 'html' });
+        var parserOutput = parser.parse();
+        console.log(parserOutput);
+        parserOutput.should.include(
+          { type: 'button', value: 'Like', attrs: { color: 'black', size: '16' }}
+        );
+      });
 
       it('should return url node', function () {
         var parser = new ThemeParser('@(images/doge.jpg)', { with: 'html' });
@@ -409,7 +433,39 @@ describe('theme', function () {
         compiler.compile()()
           .should.eq('<style type="text/css">body { background: black; }\n</style>');
       })
+      
+      it.only('should include file if variable present in src', function() {
+        var compiler = new ThemeCompiler('<!-- +(src: "{name}.html") -->', { path: join(fixtures, 'compiler', 'include', 'index.html' ), name: 'partialTest'});
+        compiler.compile()()
+          .should.eq('<div class="dynamic-partial"></div>');
+      })
 
+    })
+    
+    describe('button', function() {
+      
+      it('should insert likebutton iframe with no options', function() {
+        var compiler = new ThemeCompiler('{LikeButton}', { with: 'html'});
+        var compiledOutput = compiler.compile()({'PostID': '1234567', 'PostAuthorName': 'test'});
+        compiledOutput.should.eq('<div class=\'like_button\' data-post-id=\'1234567\' id=\'like_button_1234567\'><iframe id=\'like_iframe_1234567\' src=\'http://assets.tumblr.com/assets/html/like_iframe.html?_v=1af0c0fbf0ad9b4dc38445698d099106#name=test&amp;post_id=1234567&amp;color=grey&amp;rk=5dXEd33c\' scrolling=\'no\' width=\'20\' height=\'20\' frameborder=\'0\' class=\'like_toggle\' allowtransparency=\'true\' name=\'like_iframe_1234567\'></iframe></div>');
+      });
+      
+      it('should not insert likebutton with no context', function() {
+        var compiler = new ThemeCompiler('{LikeButton}', { with: 'html' });
+        compiler.compile()().should.eq('{LikeButton color=\'grey\' size=\'20\' }');
+      });
+      
+      it('should insert likebutton iframe with options', function() {
+        var compiler = new ThemeCompiler('{LikeButton color="black" size="16"}', { with: 'html' }); 
+        compiler.compile()({'PostID': '1234567', 'PostAuthorName': 'test' }).should.eq('<div class=\'like_button\' data-post-id=\'1234567\' id=\'like_button_1234567\'><iframe id=\'like_iframe_1234567\' src=\'http://assets.tumblr.com/assets/html/like_iframe.html?_v=1af0c0fbf0ad9b4dc38445698d099106#name=test&amp;post_id=1234567&amp;color=black&amp;rk=5dXEd33c\' scrolling=\'no\' width=\'16\' height=\'16\' frameborder=\'0\' class=\'like_toggle\' allowtransparency=\'true\' name=\'like_iframe_1234567\'></iframe></div>');
+      })
+      
+      it('should insert reblog button', function() {
+        var compiler = new ThemeCompiler('{ReblogButton color="black" size="16"}', { with: 'html' });
+        var compiledOutput = compiler.compile()({'ReblogUrl': 'https://www.tumblr.com/reblog/76621181710/Dzl0O7ZG' });
+        compiledOutput.should.eq('<a href=\'https://www.tumblr.com/reblog/76621181710/Dzl0O7ZG\' class=\'reblog_button\' style=\'display:block;width:16px;height:16px;\'></a>');
+      })
+      
     })
 
   })
