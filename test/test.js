@@ -434,7 +434,7 @@ describe('theme', function () {
           .should.eq('<style type="text/css">body { background: black; }\n</style>');
       })
       
-      it.only('should include file if variable present in src', function() {
+      it('should include file if variable present in src', function() {
         var compiler = new ThemeCompiler('<!-- +(src: "{name}.html") -->', { path: join(fixtures, 'compiler', 'include', 'index.html' ), customOptions: {name: 'partialTest'}});
         compiler.compile()()
           .should.eq('<div class="dynamic-partial"></div>');
