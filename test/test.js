@@ -296,23 +296,6 @@ describe('theme', function () {
           { type: 'variable', value: 'Test' }
         );
       });
-      
-      it('should detect plain like button', function() {
-        var parser = new ThemeParser('{LikeButton}', {with: 'html' });
-        var parserOutput = parser.parse();
-        parserOutput.should.include(
-          { type: 'button', value: 'Like', attrs: {} }
-        );
-      });
-      
-      it('should detect like button with attributes', function() {
-        var parser = new ThemeParser('{LikeButton color="black" size="16"}', { with: 'html' });
-        var parserOutput = parser.parse();
-        console.log(parserOutput);
-        parserOutput.should.include(
-          { type: 'button', value: 'Like', attrs: { color: 'black', size: '16' }}
-        );
-      });
 
       it('should return url node', function () {
         var parser = new ThemeParser('@(images/doge.jpg)', { with: 'html' });
