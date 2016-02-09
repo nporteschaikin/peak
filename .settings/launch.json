@@ -11,11 +11,11 @@
 			// Workspace relative or absolute path to the program.
 			"program": "bin/peak",
 			// Automatically stop program after launch.
-			"stopOnEntry": false,
+			"stopOnEntry": true,
 			// Command line arguments passed to the program.
-			"args": ["deploy", "-c", "pretty-little-liars"],
+			"args": ["watch", "-c", "pretty-little-liars"],
 			// Workspace relative or absolute path to the working directory of the program being debugged. Default is the current workspace.
-			"cwd": "../tumblr-test",
+			"cwd": "../abcfamily-tumblr-new",
 			// Workspace relative or absolute path to the runtime executable to be used. Default is the runtime executable on the PATH.
 			"runtimeExecutable": null,
 			// Optional arguments passed to the runtime executable.
