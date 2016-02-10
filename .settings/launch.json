@@ -26,15 +26,6 @@
 			"sourceMaps": false,
 			// If JavaScript source maps are enabled, the generated code is expected in this directory.
 			"outDir": null
-		}, 
-		{
-			"name": "Attach",
-			"type": "node",
-			// TCP/IP address. Default is "localhost".
-			"address": "localhost",
-			// Port to attach to.
-			"port": 5858,
-			"sourceMaps": false
 		}
 	]
 }
