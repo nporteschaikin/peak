@@ -13,9 +13,9 @@
 			// Automatically stop program after launch.
 			"stopOnEntry": false,
 			// Command line arguments passed to the program.
-			"args": ["watch", "-c", "pretty-little-liars"],
+			"args": ["deploy", "-c", "pretty-little-liars"],
 			// Workspace relative or absolute path to the working directory of the program being debugged. Default is the current workspace.
-			"cwd": "../abcfamily-tumblr-new",
+			"cwd": "../abcfamily-tumblr.vNext",
 			// Workspace relative or absolute path to the runtime executable to be used. Default is the runtime executable on the PATH.
 			"runtimeExecutable": null,
 			// Optional arguments passed to the runtime executable.
