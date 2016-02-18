@@ -289,6 +289,13 @@ describe('theme', function () {
         parser.parse().should.include(
           {type: 'variable', value: 'Test'});
       })
+      
+      it('should return variable node with {}', function() {
+        var parser = new ThemeParser('{Test}', { with: 'html' });
+        parser.parse().should.include(
+          { type: 'variable', value: 'Test' }
+        );
+      });
 
       it('should return url node', function () {
         var parser = new ThemeParser('@(images/doge.jpg)', { with: 'html' });
@@ -409,7 +416,49 @@ describe('theme', function () {
         compiler.compile()()
           .should.eq('<style type="text/css">body { background: black; }\n</style>');
       })
+      
+      it('should include file if variable present in src', function() {
+        var compiler = new ThemeCompiler('<!-- +(src: "{name}.html") -->', { path: join(fixtures, 'compiler', 'include', 'index.html' ), customOptions: {name: 'partialTest'}});
+        compiler.compile()()
+          .should.eq('<div class="dynamic-partial"></div>');
+      })
 
+    })
+    
+    describe('button', function() {
+      
+      it('should insert likebutton iframe with no options', function() {
+        var compiler = new ThemeCompiler('{LikeButton}', { with: 'html'});
+        var compiledOutput = compiler.compile()({'PostID': '1234567', 'PostAuthorName': 'test'});
+        compiledOutput.should.eq('<div class=\'like_button\' data-post-id=\'1234567\' id=\'like_button_1234567\'><iframe id=\'like_iframe_1234567\' src=\'http://assets.tumblr.com/assets/html/like_iframe.html?_v=1af0c0fbf0ad9b4dc38445698d099106#name=test&amp;post_id=1234567&amp;color=grey&amp;rk=5dXEd33c\' scrolling=\'no\' width=\'20\' height=\'20\' frameborder=\'0\' class=\'like_toggle\' allowtransparency=\'true\' name=\'like_iframe_1234567\'></iframe></div>');
+      });
+      
+      it('should not insert likebutton with no context', function() {
+        var compiler = new ThemeCompiler('{LikeButton}', { with: 'html' });
+        compiler.compile()().should.eq('{LikeButton color=\"grey\" size=\"20\"}');
+      });
+      
+      it('should insert likebutton iframe with options', function() {
+        var compiler = new ThemeCompiler('{LikeButton color="black" size="16"}', { with: 'html' }); 
+        compiler.compile()({'PostID': '1234567', 'PostAuthorName': 'test' }).should.eq('<div class=\'like_button\' data-post-id=\'1234567\' id=\'like_button_1234567\'><iframe id=\'like_iframe_1234567\' src=\'http://assets.tumblr.com/assets/html/like_iframe.html?_v=1af0c0fbf0ad9b4dc38445698d099106#name=test&amp;post_id=1234567&amp;color=black&amp;rk=5dXEd33c\' scrolling=\'no\' width=\'16\' height=\'16\' frameborder=\'0\' class=\'like_toggle\' allowtransparency=\'true\' name=\'like_iframe_1234567\'></iframe></div>');
+      })
+      
+      it('should insert reblog button', function() {
+        var compiler = new ThemeCompiler('{ReblogButton color="black" size="16"}', { with: 'html' });
+        var compiledOutput = compiler.compile()({'ReblogUrl': 'https://www.tumblr.com/reblog/76621181710/Dzl0O7ZG' });
+        compiledOutput.should.eq('<a href=\'https://www.tumblr.com/reblog/76621181710/Dzl0O7ZG\' class=\'reblog_button\' style=\'display:block;width:16px;height:16px;\'><svg width=\'100%\' height=\'100%\' viewBox=\'0 0 21 21\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' fill=\'#000\'><path d=\'M5.01092527,5.99908429 L16.0088498,5.99908429 L16.136,9.508 L20.836,4.752 L16.136,0.083 L16.1360004,3.01110845 L2.09985349,3.01110845 C1.50585349,3.01110845 0.979248041,3.44726568 0.979248041,4.45007306 L0.979248041,10.9999998 L3.98376463,8.30993634 L3.98376463,6.89801007 C3.98376463,6.20867902 4.71892527,5.99908429 5.01092527,5.99908429 Z\'></path><path d=\'M17.1420002,13.2800293 C17.1420002,13.5720293 17.022957,14.0490723 16.730957,14.0490723 L4.92919922,14.0490723 L4.92919922,11 L0.5,15.806 L4.92919922,20.5103758 L5.00469971,16.9990234 L18.9700928,16.9990234 C19.5640928,16.9990234 19.9453125,16.4010001 19.9453125,15.8060001 L19.9453125,9.5324707 L17.142,12.203\'></path></svg></a>');
+      })
+      
+    })
+    
+    describe('textblock', function() {
+        
+        it('should render text block with text', function() {
+            var compiler = new ThemeCompiler('{block:Text}<div class="caption clearfix rte">{block:Title}<h1 class="post-title"><a href="{Permalink}">Test title {Title}</a></h1>{/block:Title}{Body}</div>{/block:Text}', { with: 'html'});
+            var compiledOutput = compiler.compile()({'block:Text': true, 'block:Title': true, 'Title': 'Dave', 'Body': 'Dave Body'});
+            compiledOutput.should.eq('<div class=\"caption clearfix rte\"><h1 class=\"post-title\"><a href=\"\">Test title Dave</a></h1>Dave Body</div>');
+        })
+        
     })
 
   })

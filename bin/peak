@@ -18,17 +18,9 @@ var Parse = function Parse () {
   generate.addArgument(['-e', '--email'], { help: 'tumblr blog e-mail address' });
   generate.addArgument(['-p', '--password'], { help: 'tumblr blog password' });
 
-  watch.addArgument(['--path'], { help: 'source path' });
-  watch.addArgument(['-p', '--port'],  { help: 'port to run server' });
-  watch.addArgument(['-i', '--index'],  { help: 'path to index file' });
-  watch.addArgument(['-b', '--blog'],  { help: 'tumblr blog to use as context' });
-  watch.addArgument(['-e', '--email'], { help: 'tumblr blog e-mail address' });
-  watch.addArgument(['-P', '--password'], { help: 'tumblr blog password' });
-
-  deploy.addArgument(['-i', '--index'], { help: 'theme to deploy' });
-  deploy.addArgument(['-b', '--blog'],  { help: 'tumblr blog to deploy to' });
-  deploy.addArgument(['-e', '--email'], { help: 'tumblr blog e-mail address' });
-  deploy.addArgument(['-p', '--password'], { help: 'tumblr blog password' });
+  watch.addArgument(['-c', '--config'], { help: 'config file path' });
+  
+  deploy.addArgument(['-c', '--config'], { help: 'config file path' });
 
   this.args = parser.parseArgs();
 }

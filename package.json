@@ -1,7 +1,11 @@
 {
   "name": "peak",
-  "version": "0.4.4",
+  "version": "0.5.0",
   "author": "Noah Portes Chaikin <noah.porteschaikin@carrotcreative.com>",
+  "contributors": [{
+    "name": "Dave Miscampbell",
+    "email": "david@miscampbell.com"
+  }],
   "description": "Tumblr development framework.",
   "license": "MIT",
   "keywords": [
@@ -12,7 +16,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/nporteschaikin/peak.git"
+    "url": "https://github.com/DaveMiscampbell/peak"
   },
   "main": "lib",
   "directories": {
